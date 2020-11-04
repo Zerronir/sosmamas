@@ -42,34 +42,113 @@
     @endif
 
 
-    <article class="d-flex flex-row justify-content-between pb-3 pt-3">
-        <article class="pr-3">
-            <a href="/productos/mascarillas-adultos">
-                <article class="img-container">
-                    <img src="{{asset('/img/m_adulto.jpg')}}" width="450px" alt="">
-                    <article class="center">
-                        <p>Mascarillas para adultos</p>
-                    </article>
-                </article>
-            </a>
+    <article class="d-flex flex-column justify-content-between pb-3 pt-3">
+        <article class="d-flex flex-row justify-content-center">
+            <h2>Top necesarios Covid-19</h2>
         </article>
 
-        <article class="pl-3">
-            <a href="/productos/mascarillas-infantiles">
-                <article class="img-container">
-                    <img src="{{asset('/img/m_infantil.jpg')}}" width="450px" alt="">
-                    <article class="center">
-                        <p>Mascarillas infantiles</p>
+        <article class="d-flex flex-row justify-content-between pb-3 pt-3 w-100">
+            <article class="pr-3">
+                <a href="/productos/mascarillas-adultos">
+                    <article class="img-container">
+                        <img src="{{asset('/img/m_adulto.jpg')}}" width="450px" alt="">
+                        <article class="center">
+                            <p>Mascarillas para adultos</p>
+                        </article>
                     </article>
-                </article>
-            </a>
+                </a>
+            </article>
+
+            <article class="pl-3">
+                <a href="/productos/mascarillas-infantiles">
+                    <article class="img-container">
+                        <img src="{{asset('/img/m_infantil.jpg')}}" width="450px" alt="">
+                        <article class="center">
+                            <p>Mascarillas infantiles</p>
+                        </article>
+                    </article>
+                </a>
+            </article>
         </article>
 
     </article>
+        <div>
+            <h2>Bolsas</h2>
+            <div class="row">
+                @foreach($bolsas as $bolsa)
+                    <div class="col-md-3 col-sm-6 mt-3 mb-3">
+                        <div class="product-grid">
+                            <div class="product-image">
+                                <a href="/productos/{{ $bolsa->productoId }}">
+                                    <img class="pic-1" src="{{ asset("img/".$bolsa->img1 ) }}">
+                                </a>
+                                <!--<span class="product-new-label">Sale</span>
+                                <span class="product-discount-label">20%</span> -->
+                            </div>
+                            <div class="product-content">
+                                <h3 class="title"><a href="#">{{$bolsa->nombre}}</a></h3>
+                                <div class="price">
+                                    {{ $bolsa->precio }}€
+                                </div>
+                                <a class="add-to-cart" href="">Ver producto</a>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        </div>
 
-    <article>
-        test
-    </article>
+        <div>
+            <h2>Pantalones</h2>
+            <div class="row">
+                @foreach($pantalones as $pantalon)
+                    <div class="col-md-3 col-sm-6 mt-3 mb-3">
+                        <div class="product-grid">
+                            <div class="product-image">
+                                <a href="/productos/{{ $pantalon->productoId }}">
+                                    <img class="pic-1" src="{{ asset("img/".$pantalon->img1 ) }}">
+                                </a>
+                                <!--<span class="product-new-label">Sale</span>
+                                <span class="product-discount-label">20%</span> -->
+                            </div>
+                            <div class="product-content">
+                                <h3 class="title"><a href="#">{{$pantalon->nombre}}</a></h3>
+                                <div class="price">
+                                    {{ $pantalon->precio }}€
+                                </div>
+                                <a class="add-to-cart" href="">Ver producto</a>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+
+        <div>
+            <h2>Mandalas</h2>
+            <div class="row">
+                @foreach($mandalas as $mandala)
+                    <div class="col-md-3 col-sm-6 mt-3 mb-3">
+                        <div class="product-grid">
+                            <div class="product-image">
+                                <a href="/productos/{{ $mandala->productoId }}">
+                                    <img class="pic-1" src="{{ asset("img/".$mandala->img1 ) }}">
+                                </a>
+                                <!--<span class="product-new-label">Sale</span>
+                                <span class="product-discount-label">20%</span> -->
+                            </div>
+                            <div class="product-content">
+                                <h3 class="title"><a href="#">{{$mandala->nombre}}</a></h3>
+                                <div class="price">
+                                    {{ $mandala->precio }}€
+                                </div>
+                                <a class="add-to-cart" href="">Ver producto</a>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        </div>
 
 </main>
 

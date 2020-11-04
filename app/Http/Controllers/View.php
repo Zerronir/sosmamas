@@ -10,11 +10,22 @@ class View {
         $surname = session("surname");
         $name = session("name");
 
+        $mascarillas = DB::table("productos")->select("*")->where("tipo", "=", "mascarillas")->where("status", "=", "ON")->get();
+        $bolsas = DB::table("productos")->select("*")->where("tipo", "=", "bolsas")->where("status", "=", "ON")->get();
+        $pantalones = DB::table("productos")->select("*")->where("tipo", "=", "pantalones")->where("status", "=", "ON")->get();
+        $mandalas = DB::table("productos")->select("*")->where("tipo", "=", "mandalas")->where("status", "=", "ON")->get();
+        $categorias = DB::table("productos")->select("tipo")->where("status", "=", "ON")->groupBy("tipo")->orderBy("tipo", "desc")->limit(3)->get();
+
         if($token != null){
             return \View::make("index")
                 ->with("pagename", 'Inicio')
                 ->with("token", $token)
                 ->with("surname", $surname)
+                ->with("mascarillas", $mascarillas)
+                ->with("bolsas", $bolsas)
+                ->with("pantalones", $pantalones)
+                ->with("mandalas", $mandalas)
+                ->with("categorias", $categorias)
                 ->with("name", $name);
 
         } elseif($register != null) {
@@ -23,10 +34,20 @@ class View {
                 ->with("token", $token)
                 ->with("register", "successful")
                 ->with("surname", $surname)
+                ->with("mascarillas", $mascarillas)
+                ->with("bolsas", $bolsas)
+                ->with("pantalones", $pantalones)
+                ->with("categorias", $categorias)
+                ->with("mandalas", $mandalas)
                 ->with("name", $name);
         } else {
             return \View::make("index")
                 ->with("pagename", 'Inicio')
+                ->with("categorias", $categorias)
+                ->with("mascarillas", $mascarillas)
+                ->with("bolsas", $bolsas)
+                ->with("pantalones", $pantalones)
+                ->with("mandalas", $mandalas)
                 ->with("token", "");
         }
 

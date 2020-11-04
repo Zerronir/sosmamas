@@ -16,7 +16,7 @@
 
     <ul class="nav justify-content-end">
         @if ($token != null)
-            <li class="nav-item"><a class="nav-link" href="/perfil">{{ $name ?? ''  }} {{ $surname ?? 'Mi perfil' }}</a></li>
+            <li class="nav-item"><a class="nav-link" href="/perfil">{{ $name ?? ''  }} {{ $surname ?? '' }}</a></li>
             <li class="nav-item"><a class="nav-link" href="/carrito">Carrito</a></li>
         @else
             <li class="nav-item"><a class="nav-link" href="/login">Iniciar sesión</a></li>
@@ -30,23 +30,42 @@
 <main class="mt-5 mb-5">
 
     <article class="d-flex flex-row justify-content-center">
-        <h1>Esto es la página de productos</h1>
+        <h1 style="text-transform: capitalize">{{$productos[0]->tipo}}</h1>
     </article>
 
-    <article class="d-flex flex-row flex-wrap justify-content-between mr-5 ml-5">
-        @foreach($productos as $producto)
-            <div class="bg-dark mt-3 p-3 text-center text-white overflow-hidden" style="width: 49%;">
-                <div class="m-3">
-                    <h2 class="display-5">{{$producto->nombre}}</h2>
-                    <p class="lead">{{ $producto->precio }}€</p>
-                    <p>Ver más de este tipo <a href="/productos/{{$producto->tipo}}">{{$producto->tipo}}</a></p>
-                </div>
-                <div class="bg-light shadow-sm mx-auto" style="width: 80%; height: 300px; border-radius: 21px 21px 0 0;">
-                    <img src="{{asset('img'.$producto->img1)}}" style="width: 100%;border-radius: 21px 21px 0 0;" alt="">
-                </div>
-            </div>
-        @endforeach
+    <article class="d-flex flex-row justify-content-center">
+
+        <ul class="d-flex flex-row">
+            @foreach($categorias as $categoria)
+                <li><a href="/productos/{{$categoria->tipo}}" class="pr-list">{{$categoria->tipo}}</a></li>
+            @endforeach
+        </ul>
     </article>
+
+    <div class="container">
+        <div class="row">
+            @foreach($productos as $producto)
+                <div class="col-md-3 col-sm-6 mt-3 mb-3">
+                    <div class="product-grid">
+                        <div class="product-image">
+                            <a href="/productos/{{ $producto->productoId }}">
+                                <img class="pic-1" src="{{ asset("img/".$producto->img1 ) }}">
+                            </a>
+                            <!--<span class="product-new-label">Sale</span>
+                            <span class="product-discount-label">20%</span> -->
+                        </div>
+                        <div class="product-content">
+                            <h3 class="title"><a href="#">{{$producto->nombre}}</a></h3>
+                            <div class="price">
+                                {{ $producto->precio }}€
+                            </div>
+                            <a class="add-to-cart" href="">Ver producto</a>
+                        </div>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+    </div>
 </main>
 
 @extends("footer")
