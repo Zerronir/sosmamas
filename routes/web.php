@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\View;
+use App\Http\Controllers\UserController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -16,9 +17,17 @@ use App\Http\Controllers\View;
 // GET
 Route::get('/', [View::class, 'index']);
 Route::get('/perfil', [View::class, 'userPage']);
-Route::get('/productos', [View::class, 'products']);
 Route::get('/sobre-nosotros', [View::class, 'aboutUs']);
 Route::get('/registro', [View::class, 'registro']);
+Route::get('/login', [View::class, 'login']);
+
+// RUTAS DE PRODUCTOS
+Route::get('/productos', [View::class, 'products']);
+Route::get('/productos/{tipo}', [
+    "uses" => "View@listarTipos",
+    "as" => "listarTipo"
+]);
 
 // POST
-Route::post('/doRegistro', [UserController::class, 'registro']);
+Route::post('/doRegistro', [UserController::class, 'register']);
+Route::post('/doLogin', [UserController::class, 'login']);
