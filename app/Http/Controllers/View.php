@@ -10,10 +10,7 @@ class View {
         $surname = session("surname");
         $name = session("name");
 
-        $mascarillas = DB::table("productos")->select("*")->where("tipo", "=", "mascarillas")->where("status", "=", "ON")->get();
-        $bolsas = DB::table("productos")->select("*")->where("tipo", "=", "bolsas")->where("status", "=", "ON")->get();
-        $pantalones = DB::table("productos")->select("*")->where("tipo", "=", "pantalones")->where("status", "=", "ON")->get();
-        $mandalas = DB::table("productos")->select("*")->where("tipo", "=", "mandalas")->where("status", "=", "ON")->get();
+        $productos = DB::table("productos")->select("*")->limit(6)->get();
         $categorias = DB::table("productos")->select("tipo")->where("status", "=", "ON")->groupBy("tipo")->orderBy("tipo", "desc")->limit(3)->get();
 
         if($token != null){
@@ -21,10 +18,7 @@ class View {
                 ->with("pagename", 'Inicio')
                 ->with("token", $token)
                 ->with("surname", $surname)
-                ->with("mascarillas", $mascarillas)
-                ->with("bolsas", $bolsas)
-                ->with("pantalones", $pantalones)
-                ->with("mandalas", $mandalas)
+                ->with("productos", $productos)
                 ->with("categorias", $categorias)
                 ->with("name", $name);
 
@@ -34,20 +28,13 @@ class View {
                 ->with("token", $token)
                 ->with("register", "successful")
                 ->with("surname", $surname)
-                ->with("mascarillas", $mascarillas)
-                ->with("bolsas", $bolsas)
-                ->with("pantalones", $pantalones)
-                ->with("categorias", $categorias)
-                ->with("mandalas", $mandalas)
+                ->with("productos", $productos)
                 ->with("name", $name);
         } else {
             return \View::make("index")
                 ->with("pagename", 'Inicio')
                 ->with("categorias", $categorias)
-                ->with("mascarillas", $mascarillas)
-                ->with("bolsas", $bolsas)
-                ->with("pantalones", $pantalones)
-                ->with("mandalas", $mandalas)
+                ->with("productos", $productos)
                 ->with("token", "");
         }
 
@@ -147,6 +134,28 @@ class View {
                     ->with("categorias", $categorias)
                     ->with("surname", $surname)
                     ->with("name", $name);
+
+    }
+
+    public function verProductos($productoID) {
+
+        $name = session("name");
+        $token = session("token");
+        $surname = session("surname");
+
+        $producto = DB::table("productos")->select("*")
+            ->where("productoId", "=", $productoID)
+            ->get();
+
+        $categorias = DB::table("productos")->select("tipo")->distinct()->get();
+
+        return \View::make("producto")
+            ->with("producto", $producto)
+            ->with("pagename", $producto[0]->nombre)
+            ->with("token", $token)
+            ->with("categorias", $categorias)
+            ->with("surname", $surname)
+            ->with("name", $name);
 
     }
 

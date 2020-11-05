@@ -27,7 +27,15 @@ Route::get('/productos/{tipo}', [
     "uses" => "View@listarTipos",
     "as" => "listarTipo"
 ]);
+Route::get('/productos/ver/{productoId}', [
+    "uses" => "View@verProductos",
+    "as" => "verProducto"
+]);
+
 
 // POST
 Route::post('/doRegistro', [UserController::class, 'register']);
 Route::post('/doLogin', [UserController::class, 'login']);
+
+// CERRAR SESION
+Route::get('/logout', [UserController::class, 'logout']);

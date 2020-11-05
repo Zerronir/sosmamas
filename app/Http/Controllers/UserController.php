@@ -10,18 +10,6 @@ use \Illuminate\Database\Eloquent\Collection;
 use function Sodium\crypto_pwhash_scryptsalsa208sha256_str;
 
 class UserController {
-    public function getUserData(){
-        $session = session(["name" => ""]);
-
-        if($session != null ) {
-            $name = session('name');
-            return $name;
-        } else {
-            $name = "";
-
-            return $name;
-        }
-    }
 
     public function login(Request $request){
 
@@ -59,6 +47,16 @@ class UserController {
 
     }
 
+    public function logout(Request $request){
+        if($request->session()->has("token")){
+            $request->session()->forget([
+                "name",
+                "surname",
+                "token"
+            ]);
+            return redirect()->action("View@index");
+        }
+    }
     // Register Function
     public function register(Request $request){
        $pass1 = $request->input("pass1");
