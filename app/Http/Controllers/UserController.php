@@ -4,6 +4,7 @@
 namespace App\Http\Controllers;
 use App\Http\Controllers\View;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use \Illuminate\Database\Eloquent\Collection;
@@ -154,6 +155,94 @@ class UserController {
             $pass[] = $alphabet[$n];
         }
         return implode($pass); //turn the array into a string
+    }
+
+    public function getProductsAPI(){
+        $productos = DB::table("productos")->select("*")->get();
+        return response()
+            ->json(["productos" => $productos]);
+    }
+
+    public function getCategoryAPI($tipoProducto) {
+        $productosCat = DB::table("productos")
+                            ->select("*")
+                            ->where("tipo", "=", $tipoProducto)
+                            ->get();
+
+        return response()->json(["productos" => $productosCat]);
+
+    }
+
+    function validateRegisterRequest(Request $request){
+        $pass1 = $request->input("password");
+        $pass2 = $request->input("password_repeat");
+
+        if(($pass1 == $pass2) && (filter_var( $request->input("email"),FILTER_VALIDATE_EMAIL))) {
+            return true;
+        }
+
+        return false;
+    }
+
+    function checkMail(Request $request) {
+        $email = $request->input("email");
+
+        $user = DB::table("users")->select("email")->where("email", "=", $email);
+
+        if($user[0]->email != "" || $user[0]->email != null) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public function registerUserAPI(Request $request) {
+
+        if($this->validateRegisterRequest($request)) {
+             if($this->checkMail($request)){
+                 //Generate a random string.
+                 $token = openssl_random_pseudo_bytes(16);
+                 $token = bin2hex($token);
+
+                 $salt = sha1(md5($request->input("password"))).'k32duem01vZsQ2lB8g0s';
+                 $passToDB = md5($request->input("password").$salt);
+
+                 $name = $request->input("name");
+                 $surname = $request->input("surname");
+                 $email = $request->input("email");
+
+                 $user = DB::table("users")
+                     ->insert([
+                         'name' => $name,
+                         'surname' => $surname,
+                         'email' => $email,
+                         'password' => $passToDB,
+                         'userToken' => $token
+                     ]);
+                 return response()
+                     ->json(["user" => $user]);
+             }
+        }
+
+        return response()->json(["user" => ""]);
+    }
+
+    public function getUserAPI(Request $request) {
+        $salt = sha1(md5($request->input("pass"))).'k32duem01vZsQ2lB8g0s';
+        $passToDB = md5($request->input("pass").$salt);
+        $user = DB::table("users")
+                    ->select(
+                        'name',
+                        'surname',
+                        'email',
+                        'userToken'
+                    )
+                    ->where("email", "=", $request->input("email"))
+                    ->where("password", "=", $passToDB)
+                    ->get();
+        // Devolvemos todos los datos
+        return response()
+                ->json(["user" => $user]);
     }
 
 }

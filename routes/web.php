@@ -39,3 +39,11 @@ Route::post('/doLogin', [UserController::class, 'login']);
 
 // CERRAR SESION
 Route::get('/logout', [UserController::class, 'logout']);
+
+Route::group(['middleware' => ['cors']], function() {
+    Route::get("/listProducts", [UserController::class, "getProductsAPI"]);
+    // Recogemos los productos de una categoria
+    Route::get("/listProductos/{tipo}", [UserController::class, "getCategoryAPI"]);
+    Route::post("/api/register", [UserController::class, "registerUserAPI"]);
+    Route::get("/api/doLogin", [UserController::class, "getUserAPI"]);
+});
